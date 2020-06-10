@@ -35,7 +35,7 @@ export class OrderResolver {
       throw Error("The quantity for ordering cannot be 0.");
 
     Medicine.merge(medicine, {
-      quantity: newQuantity
+      quantity: newQuantity,
     });
 
     const result = await medicine.save();
@@ -51,7 +51,7 @@ export class OrderResolver {
       .createQueryBuilder()
       .relation(Medicine, "orders")
       .of(result.id)
-      .add(order);
+      .add(order.id);
 
     return order;
   }

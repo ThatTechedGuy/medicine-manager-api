@@ -49,7 +49,7 @@ export class SaleResolver {
       .createQueryBuilder()
       .relation(Medicine, "sales")
       .of(result.id)
-      .add(sale);
+      .add(sale.id);
 
     return sale;
   }
@@ -84,7 +84,7 @@ export class SaleResolver {
     return await Sale.find();
   }
 
-  @FieldResolver(() => Medicine)
+  @FieldResolver(() => Sale)
   async medicine(@Root() sale: Sale) {
     return await getConnection()
       .createQueryBuilder()

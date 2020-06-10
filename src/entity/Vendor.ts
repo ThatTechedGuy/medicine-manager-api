@@ -38,5 +38,5 @@ export class Vendor extends BaseEntity {
     eager: true,
     nullable: true,
   })
-  medicines: Medicine[] = [];
+  medicines: Medicine[];
 }

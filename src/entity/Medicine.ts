@@ -67,11 +67,17 @@ export class Medicine extends BaseEntity {
   vendor?: Vendor;
 
   @Field(() => [Sale], { nullable: true })
-  @OneToMany(() => Sale, (sale) => sale.medicine)
+  @OneToMany(() => Sale, (sale) => sale.medicine, {
+    eager: true,
+    nullable: true,
+  })
   sales: Sale[];
 
   @Field(() => [Order], { nullable: true })
-  @OneToMany(() => Order, (order) => order.medicine)
+  @OneToMany(() => Order, (order) => order.medicine, {
+    eager: true,
+    nullable: true,
+  })
   orders: Order[];
 
   @AfterUpdate()

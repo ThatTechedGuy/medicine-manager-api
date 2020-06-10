@@ -26,7 +26,6 @@ export class Order extends BaseEntity {
 
   @Field(() => Medicine, { nullable: true })
   @ManyToOne((type) => Medicine, (medicine) => medicine.orders, {
-    eager: true,
     nullable: true,
   })
   medicine: Medicine;

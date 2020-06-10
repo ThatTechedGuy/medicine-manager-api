@@ -6,10 +6,10 @@ import { buildSchema } from "type-graphql";
 
 import express from "express";
 import bodyParser from "body-parser";
-import { HelloWorldResolver } from "./resolvers/HelloWorld";
 import { VendorResolver } from "./resolvers/VendorResolver";
 import { MedicineResolver } from "./resolvers/MedicineResolver";
 import { SaleResolver } from "./resolvers/SaleResolver";
+import { OrderResolver } from "./resolvers/OrderResolver";
 
 (async () => {
   await createConnection();
@@ -21,7 +21,7 @@ import { SaleResolver } from "./resolvers/SaleResolver";
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [VendorResolver, MedicineResolver, SaleResolver],
+      resolvers: [VendorResolver, MedicineResolver, SaleResolver, OrderResolver],
     }),
     context: ({ req, res }) => ({ req, res }),
   });
