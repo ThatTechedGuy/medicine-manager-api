@@ -1,10 +1,17 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, OneToOne, Column, ManyToOne } from "typeorm";
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  Column,
+  ManyToOne,
+} from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { Medicine } from "./Medicine";
 
 @ObjectType()
 @Entity()
-export class Order extends BaseEntity{
+export class Order extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -13,12 +20,12 @@ export class Order extends BaseEntity{
   @Column()
   quantityOrdered: number;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   dateOrdered: Date;
 
   @Field(() => Medicine, { nullable: true })
-  @ManyToOne((type) => Medicine, (medicine) => medicine, {
+  @ManyToOne((type) => Medicine, (medicine) => medicine.orders, {
     eager: true,
     nullable: true,
   })

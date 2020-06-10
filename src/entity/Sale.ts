@@ -29,7 +29,7 @@ export class Sale extends BaseEntity {
   dateSold: Date;
 
   @Field(() => Medicine, { nullable: true })
-  @ManyToOne((type) => Medicine, (medicine) => medicine, {
+  @ManyToOne((type) => Medicine, (medicine) => medicine.sales, {
     eager: true,
     nullable: true,
   })
