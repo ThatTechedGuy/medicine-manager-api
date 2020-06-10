@@ -18,14 +18,25 @@ export class Vendor extends BaseEntity {
   id: number;
 
   @Field(() => String)
-  @Column()
+  @Column({ unique: true })
   name: string;
+
+  @Field(() => String)
+  @Column()
+  address: string;
+
+  @Field(() => String)
+  @Column()
+  phoneNumber: string;
 
   @Field(() => String)
   @Column()
   email: string;
 
-  @Field(() => [Medicine])
-  @OneToMany(() => Medicine, (medicine) => medicine.vendor, { eager: true })
-  medicines: Medicine[];
+  @Field(() => [Medicine], { nullable: true })
+  @OneToMany(() => Medicine, (medicine) => medicine.vendor, {
+    eager: true,
+    nullable: true,
+  })
+  medicines: Medicine[] = [];
 }

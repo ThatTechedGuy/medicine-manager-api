@@ -8,8 +8,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import { HelloWorldResolver } from "./resolvers/HelloWorld";
 import { VendorResolver } from "./resolvers/VendorResolver";
-import { seedDb } from "./seedDb";
 import { MedicineResolver } from "./resolvers/MedicineResolver";
+import { SaleResolver } from "./resolvers/SaleResolver";
 
 (async () => {
   await createConnection();
@@ -21,7 +21,7 @@ import { MedicineResolver } from "./resolvers/MedicineResolver";
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloWorldResolver, VendorResolver, MedicineResolver],
+      resolvers: [VendorResolver, MedicineResolver, SaleResolver],
     }),
     context: ({ req, res }) => ({ req, res }),
   });

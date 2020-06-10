@@ -6,21 +6,20 @@ import {
   Query,
   Int,
   Field,
-  FieldResolver,
-  Root,
 } from "type-graphql";
 import { Vendor } from "../entity/Vendor";
-import { Medicine } from "../entity/Medicine";
-import { getConnection } from "typeorm";
 
 @InputType()
 class VendorAdd {
-  @Field(() => String)
+  @Field()
   name: string;
-  @Field(() => String)
+  @Field()
   email: string;
+  @Field()
+  address: string;
+  @Field()
+  phoneNumber: string;
 }
-
 
 @Resolver((of) => Vendor)
 export class VendorResolver {
@@ -38,5 +37,4 @@ export class VendorResolver {
   async vendor(@Arg("id", () => Int) id: number) {
     return await Vendor.findOne({ id });
   }
-
 }

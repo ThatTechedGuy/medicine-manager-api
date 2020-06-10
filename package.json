@@ -21,6 +21,6 @@
       "typeorm": "^0.3.0-alpha.24"
    },
    "scripts": {
-      "start": "nodemon --exec ts-node src/index.ts"
+      "start": "ts-node src/index.ts"
    }
 }

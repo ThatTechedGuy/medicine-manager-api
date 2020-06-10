@@ -6,14 +6,23 @@ import {
   ManyToOne,
   JoinColumn,
   JoinTable,
+  AfterLoad,
+  AfterUpdate,
+  AfterInsert,
+  PrimaryColumn,
+  OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { Vendor } from "./Vendor";
+import { Sale } from "./Sale";
+import { Order } from "./Order";
 
 @ObjectType()
 @Entity()
 export class Medicine extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,34 +30,63 @@ export class Medicine extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   quantity: number;
 
-  // @Column()
-  // minimumQuantity: number;
+  @Field(() => Int)
+  @Column()
+  minimumQuantity: number;
 
-  // @Column()
-  // avgSalePerWeek: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  avgSalePerWeek: number = 0;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   price: number;
 
-  // @Column()
-  // description: string;
-
-  // @Column("date", { nullable: true })
-  // lastSold?: Date;
-
-  // @Column("date")
-  // expiryDate: Date;
+  @Field()
+  @Column()
+  description: string;
 
   @Field()
-  @Column({ nullable: true })
+  @Column()
+  expiryDate: Date;
+
+  @Field({ nullable: true })
+  @Column({ type: Boolean, nullable: true })
   hasExpired: boolean;
 
-  @Field(() => Vendor)
-  @ManyToOne(() => Vendor, (vendor) => vendor.medicines)
-  vendor: Vendor;
+  @Field({ nullable: true })
+  @Column({ type: Boolean, nullable: true })
+  isShort: boolean;
+
+  @Field(() => Vendor, { nullable: true })
+  @ManyToOne(() => Vendor, (vendor) => vendor.medicines, { nullable: true })
+  vendor?: Vendor;
+
+  @Field(() => [Sale], { nullable: true })
+  @OneToMany(() => Sale, (sale) => sale.medicine)
+  sales: Sale[];
+
+  @Field(() => [Order], { nullable: true })
+  @OneToMany(() => Order, (order) => order.medicine)
+  orders: Order[];
+
+  @AfterUpdate()
+  @AfterLoad()
+  @BeforeInsert()
+  @BeforeUpdate()
+  @AfterInsert()
+  async job() {
+    if (new Date().getTime() > this.expiryDate.getTime())
+      this.hasExpired = true;
+    else this.hasExpired = false;
+
+    if (this.quantity < this.minimumQuantity) this.isShort = true;
+    else this.isShort = false;
+
+    if (this.quantity < 0) this.quantity = 0;
+  }
 }
